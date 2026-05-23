@@ -1,0 +1,41 @@
+name: Install Terraform (Ubuntu 22)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: Terraform Install Job
+    runs-on: self-hosted
+    environment: production
+
+    steps:
+      # Checkout repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Update system packages
+      - name: Update System Packages
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y curl unzip gnupg software-properties-common
+
+      # Add HashiCorp GPG key
+      - name: Add HashiCorp GPG Key
+        run: |
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp.gpg
+
+      # Add HashiCorp repository
+      - name: Add HashiCorp Repo
+        run: |
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+      # Install Terraform
+      - name: Install Terraform
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y terraform
+          terraform version
