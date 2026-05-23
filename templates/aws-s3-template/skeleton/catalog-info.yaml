@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+
+metadata:
+  name: ${{ values.projectName }}-infra
+  description: EduArn Terraform AWS Infrastructure
+
+spec:
+  type: infrastructure
+  lifecycle: experimental
+  owner: group:default/platform-team
