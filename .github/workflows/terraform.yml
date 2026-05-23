@@ -1,0 +1,33 @@
+name: Terraform Full Pipeline
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: Terraform Init Plan Apply
+    runs-on: self-hosted
+    environment: production
+
+    steps:
+      # Step 1 - Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2 - Terraform Init
+      - name: Terraform Init
+        run: |
+          terraform init
+
+      # Step 3 - Terraform Plan
+      - name: Terraform Plan
+        run: |
+          terraform plan -input=false
+
+      # Step 4 - Terraform Apply
+      - name: Terraform Apply
+        run: |
+          terraform apply -auto-approve -input=false
